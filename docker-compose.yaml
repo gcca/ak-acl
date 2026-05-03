@@ -1,0 +1,11 @@
+services:
+  ak-acl:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ak-acl-db:/app/db
+    restart: unless-stopped
+
+volumes:
+  ak-acl-db:

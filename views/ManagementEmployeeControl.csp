@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="silk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control de Empleados - Ak ACL</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js" integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V" crossorigin="anonymous"></script>
+  <style>
+    [data-theme="silk"] {
+      color-scheme: light;
+      --rounded-box: 1rem; --rounded-btn: 0.5rem; --rounded-badge: 2rem;
+      --animation-btn: 0.25s; --animation-input: 0.2s; --btn-focus-scale: 0.95;
+      --border-btn: 2px; --tab-border: 2px; --tab-radius: 0.5rem;
+      --b1: 97% 0.0035 67.78; --b2: 95% 0.0081 61.42; --b3: 90% 0.0081 61.42; --bc: 40% 0.0081 61.42;
+      --p: 23.27% 0.0249 284.3; --pc: 94.22% 0.2505 117.44;
+      --s: 23.27% 0.0249 284.3; --sc: 73.92% 0.2135 50.94;
+      --a: 23.27% 0.0249 284.3; --ac: 88.92% 0.2061 189.9;
+      --n: 20% 0 0; --nc: 80% 0.0081 61.42;
+      --in: 80.39% 0.1148 241.68; --inc: 30.39% 0.1148 241.68;
+      --su: 83.92% 0.0901 136.87; --suc: 23.92% 0.0901 136.87;
+      --wa: 83.92% 0.1085 80; --wac: 43.92% 0.1085 80;
+      --er: 75.1% 0.1814 22.37; --erc: 35.1% 0.1814 22.37;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-base-200">
+  <div class="container mx-auto px-4 py-8">
+    <div class="mb-6 flex justify-between items-center">
+      <div>
+        <h1 class="text-4xl font-bold">Control de Empleados</h1>
+        <p class="text-base-content/70 mt-2">Gestiona tu inventario de empleados</p>
+      </div>
+      <button
+        class="btn btn-primary"
+        hx-get="/ak-acl/management/employee/control/create"
+        hx-target="#employee-form"
+        hx-swap="innerHTML">
+        Agregar Empleado
+      </button>
+    </div>
+
+    <div id="employee-form" class="mb-6"></div>
+
+    <div
+      id="employee-list"
+      hx-get="/ak-acl/management/employee/control/list"
+      hx-trigger="load"
+      hx-swap="outerHTML"></div>
+  </div>
+</body>
+</html>

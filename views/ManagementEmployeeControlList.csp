@@ -1,0 +1,119 @@
+<div id="employee-list" class="card bg-base-100 shadow-xl">
+<div class="card-body">
+  <%c++ auto search = @@.get<std::string>("search"); %>
+
+  <div class="mb-4">
+    <div class="form-control">
+      <div class="join w-full">
+        <input
+          type="text"
+          name="search"
+          placeholder="Buscar por nombre, placa o documento..."
+          class="input input-bordered join-item w-full"
+          value="<%c++ $$<<search; %>"
+          hx-get="/ak-acl/management/employee/control/list"
+          hx-trigger="keyup changed delay:500ms, search"
+          hx-target="#employee-list"
+          hx-swap="outerHTML"
+          hx-include="this" />
+        <%c++ if (!search.empty()) { %>
+        <button
+          class="btn btn-square join-item"
+          hx-get="/ak-acl/management/employee/control/list"
+          hx-target="#employee-list"
+          hx-swap="outerHTML">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        <%c++ } %>
+      </div>
+    </div>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="table table-zebra">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Placa</th>
+          <th>Tipo de Documento</th>
+          <th>Número de Documento</th>
+        </tr>
+      </thead>
+      <tbody id="employeeTableBody">
+        <%c++ auto employees = @@.get<std::vector<std::map<std::string, std::string>>>("employees"); %>
+        <%c++ for (const auto& employee : employees) { %>
+        <tr>
+          <td><%c++ $$<<employee.at("id"); %></td>
+          <td><%c++ $$<<employee.at("name"); %></td>
+          <td><span class="badge badge-primary"><%c++ $$<<employee.at("plate"); %></span></td>
+          <td><span class="badge badge-outline"><%c++ $$<<employee.at("document_type"); %></span></td>
+          <td><%c++ $$<<employee.at("document_number"); %></td>
+        </tr>
+        <%c++ } %>
+      </tbody>
+    </table>
+  </div>
+
+  <%c++ auto currentPage = @@.get<int>("currentPage"); %>
+  <%c++ auto totalPages = @@.get<int>("totalPages"); %>
+  <%c++ auto totalEmployees = @@.get<int>("totalEmployees"); %>
+  <%c++ auto pageSize = @@.get<int>("pageSize"); %>
+
+  <div class="flex flex-col items-center gap-4 mt-6">
+    <div class="text-sm text-base-content/70">
+      Mostrando <%c++ $$<<std::to_string((currentPage - 1) * pageSize + 1); %>
+      - <%c++ $$<<std::to_string(std::min(currentPage * pageSize, totalEmployees)); %>
+      de <%c++ $$<<std::to_string(totalEmployees); %> empleados
+    </div>
+
+    <%c++ if (totalPages > 1) { %>
+    <div class="join">
+      <%c++ if (currentPage > 1) { %>
+      <button
+        class="join-item btn btn-sm"
+        hx-get="/ak-acl/management/employee/control/list?page=<%c++ $$<<std::to_string(currentPage - 1); %><%c++ if (!search.empty()) { $$<<"&search=" + search; } %>"
+        hx-target="#employee-list"
+        hx-swap="outerHTML">«</button>
+      <%c++ } else { %>
+      <button class="join-item btn btn-sm btn-disabled">«</button>
+      <%c++ } %>
+
+      <%c++
+      int maxButtons = 5;
+      int startPage = std::max(1, currentPage - maxButtons / 2);
+      int endPage = std::min(totalPages, startPage + maxButtons - 1);
+
+      if (endPage - startPage < maxButtons - 1) {
+        startPage = std::max(1, endPage - maxButtons + 1);
+      }
+
+      for (int i = startPage; i <= endPage; i++) {
+      %>
+        <%c++ if (i == currentPage) { %>
+        <button class="join-item btn btn-sm btn-active"><%c++ $$<<std::to_string(i); %></button>
+        <%c++ } else { %>
+        <button
+          class="join-item btn btn-sm"
+          hx-get="/ak-acl/management/employee/control/list?page=<%c++ $$<<std::to_string(i); %><%c++ if (!search.empty()) { $$<<"&search=" + search; } %>"
+          hx-target="#employee-list"
+          hx-swap="outerHTML"><%c++ $$<<std::to_string(i); %></button>
+        <%c++ } %>
+      <%c++ } %>
+
+      <%c++ if (currentPage < totalPages) { %>
+      <button
+        class="join-item btn btn-sm"
+        hx-get="/ak-acl/management/employee/control/list?page=<%c++ $$<<std::to_string(currentPage + 1); %><%c++ if (!search.empty()) { $$<<"&search=" + search; } %>"
+        hx-target="#employee-list"
+        hx-swap="outerHTML">»</button>
+      <%c++ } else { %>
+      <button class="join-item btn btn-sm btn-disabled">»</button>
+      <%c++ } %>
+    </div>
+    <%c++ } %>
+  </div>
+</div>
+</div>

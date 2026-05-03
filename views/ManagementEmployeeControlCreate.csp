@@ -1,0 +1,56 @@
+<div class="card bg-base-100 shadow-xl">
+  <div class="card-body">
+    <h2 class="card-title">Agregar Nuevo Empleado</h2>
+    <form
+      hx-post="/ak-acl/management/employee/control/create"
+      hx-target="#employee-list"
+      hx-swap="outerHTML"
+      hx-on::after-request="if(event.detail.successful) document.getElementById('employee-form').innerHTML = ''"
+      class="space-y-4">
+
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text">Nombre</span>
+        </label>
+        <input type="text" name="name" class="input input-bordered" required />
+      </div>
+
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text">Placa</span>
+        </label>
+        <input type="text" name="plate" class="input input-bordered" required />
+      </div>
+
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text">Tipo de Documento</span>
+        </label>
+        <select name="document_type" class="select select-bordered" required>
+          <option value="">Seleccionar...</option>
+          <option value="dni">DNI</option>
+          <option value="ruc">RUC</option>
+          <option value="ca">Carnet de Extranjería</option>
+          <option value="pass">Pasaporte</option>
+        </select>
+      </div>
+
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text">Número de Documento</span>
+        </label>
+        <input type="text" name="document_number" class="input input-bordered" required />
+      </div>
+
+      <div class="flex gap-2">
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <button
+          type="button"
+          class="btn btn-ghost"
+          onclick="document.getElementById('employee-form').innerHTML = ''">
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

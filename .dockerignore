@@ -1,0 +1,14 @@
+.git
+.cache
+build
+uploads
+*.md
+LICENSE
+.gitignore
+.clang-format
+Dockerfile
+.dockerignore
+db/*.sqlite3
+db/*.db
+uploads/
+.github/
